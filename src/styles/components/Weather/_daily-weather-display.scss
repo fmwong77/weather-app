@@ -1,37 +1,44 @@
 $daily-weather-display-height: 170px;
-$daily-weather-display-background-color: #CFD8DC;
+$daily-weather-display-background-color: #cfd8dc;
 
 .daily-weather-card {
-    height: $daily-weather-display-height - 20px;
-    text-align: center;
+	height: $daily-weather-display-height - 20px;
+	text-align: center;
 }
 
 .daily-weather-card .icon {
-    height: 50px;
-    max-width: 50px;
+	height: 50px;
+	max-width: 50px;
 }
 
 .daily-weather-display {
-    background-color: $daily-weather-display-background-color;
-    height: $daily-weather-display-height;
-    position: relative;
-    width: 100%;
+	background-color: $daily-weather-display-background-color;
+	height: $daily-weather-display-height;
+	position: relative;
+	width: 100%;
 }
 
 .daily-weather-display .carousel {
-    background-color: $daily-weather-display-background-color;
-    position: absolute;
-    width: 100%;
+	background-color: $daily-weather-display-background-color;
+	position: absolute;
+	width: 100%;
 }
 
 .daily-weather-display .carousel-nav {
-    cursor: pointer;
-    line-height: $daily-weather-display-height - 20px;
-    opacity: 0.5;
-    position: absolute;
-    z-index: 10;
+	cursor: pointer;
+	line-height: $daily-weather-display-height - 20px;
+	opacity: 0.5;
+	position: absolute;
+	z-index: 10;
 }
 
 .daily-weather-display .carousel-nav > i {
-    vertical-align: middle;
+	vertical-align: middle;
+}
+
+.box {
+	float: left;
+	width: 200px;
+	height: 100px;
+	margin: 1em;
 }
