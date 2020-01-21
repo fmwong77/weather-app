@@ -1,4 +1,5 @@
 import React, { createContext, Component } from 'react';
+import ls from 'local-storage';
 
 export const WeatherContext = createContext();
 
@@ -9,7 +10,10 @@ class WeatherContextProvider extends Component {
 	}
 
 	toggleUnit = () => {
-		this.setState({ unit: this.state.unit === 'C' ? 'F' : 'C' });
+		this.setState(
+			{ unit: this.state.unit === 'C' ? 'F' : 'C' },
+			ls.set('unit', this.state.unit)
+		);
 	};
 
 	// handleOnRefresh = () => {

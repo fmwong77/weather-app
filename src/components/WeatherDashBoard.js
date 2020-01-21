@@ -155,9 +155,6 @@ class WeatherDashBoard extends Component {
 	render() {
 		return (
 			<div>
-				<div>
-					<CreateNotification />
-				</div>
 				{this.showWeather() && (
 					<div>
 						<CurrentWeatherDisplay

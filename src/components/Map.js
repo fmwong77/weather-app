@@ -8,8 +8,8 @@ import {
 } from 'react-google-maps';
 import Geocode from 'react-geocode';
 import Autocomplete from 'react-google-autocomplete';
-// Geocode.setApiKey(process.env.REACT_GOOGLE_GEOLOCATION_API_KEY);
-Geocode.setApiKey('AIzaSyCPeKDCa4hqQkYjzHqRY-vFXc6xeITXxVI');
+Geocode.setApiKey(process.env.REACT_GOOGLE_GEOLOCATION_API_KEY);
+// Geocode.setApiKey('AIzaSyCPeKDCa4hqQkYjzHqRY-vFXc6xeITXxVI');
 Geocode.enableDebug();
 
 class Map extends Component {
