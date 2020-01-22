@@ -1,31 +1,56 @@
-import React, { Component } from 'react';
-
-const URL = 'http://localhost:3000/api/v1/locations';
+import React, { Component, Fragment } from 'react';
+import { WeatherContext } from '../contexts/WeatherContext';
 
 class SideBar extends Component {
+	static contextType = WeatherContext;
+
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			locations: [],
+			user_id: null
+		};
 	}
 
-	componentDidMount = () => {
-		fetch(URL)
-			.then((response) => response.json())
-			.then((locations) => console.log(locations));
+	componentDidUpdate() {
+		if (this.state.user_id !== this.context.user_id) {
+			if (this.context.user_id) {
+				fetch(
+					`http://127.0.0.1:3000/api/v1/favourite_locations?user_id=${this.context.user_id}`
+				)
+					.then((response) => response.json())
+					.then((locations) =>
+						this.setState({
+							locations: locations,
+							user_id: this.context.user_id
+						})
+					);
+			}
+		}
+	}
+
+	setLocationInContext = (e) => {
+		this.context.setLocation(e.target.value);
 	};
 
 	render() {
 		return (
 			<form>
-				<select name="location" id="location">
-					<option value="All">Current</option>
-					<option value="Assault">Assault</option>
-					<option value="Defender">Defender</option>
-					<option value="Support">Support</option>
+				<select
+					name="location"
+					id="location"
+					onChange={(event) => this.setLocationInContext(event)}
+				>
+					<option value={null}>Current</option>
+					{this.state.locations.map((location) => (
+						<option
+							value={`${location.latitude},${location.longitude}`}
+						>{`${location.area}, ${location.state}`}</option>
+					))}
 				</select>
-				<button type="submit" className="ui secondary button">
-					Filter
-				</button>
+				{/* <button type="submit" className="ui secondary button">
+					Refresh Forecast
+				</button> */}
 			</form>
 		);
 	}

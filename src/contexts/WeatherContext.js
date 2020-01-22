@@ -9,7 +9,9 @@ class WeatherContextProvider extends Component {
 		this.state = {
 			unit: ls.get('unit'),
 			isAuthenticated: false,
-			user_id: null
+			user_id: null,
+			latitude: null,
+			longitude: null
 		};
 	}
 
@@ -22,7 +24,23 @@ class WeatherContextProvider extends Component {
 	};
 
 	setUserId = (userid) => {
-		this.setState({ user_id: userid }, () => console.log(this.state.user_id));
+		this.setState({ user_id: userid });
+	};
+
+	setLocation = (location) => {
+		if (location !== null) {
+			const coordinate = location.split(',');
+
+			this.setState({
+				latitude: coordinate[0],
+				longitude: coordinate[1]
+			});
+		} else {
+			this.setState({
+				latitude: null,
+				longitude: null
+			});
+		}
 	};
 
 	render() {
@@ -32,7 +50,8 @@ class WeatherContextProvider extends Component {
 					...this.state,
 					toggleUnit: this.toggleUnit,
 					toggleAuthentication: this.toggleAuthentication,
-					setUserId: this.setUserId
+					setUserId: this.setUserId,
+					setLocation: this.setLocation
 				}}
 			>
 				{this.props.children}

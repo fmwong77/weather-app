@@ -38,7 +38,6 @@ class Authenticate extends Component {
 		)
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data.length);
 				if (data.length > 0) {
 					notifier.success(`Welcome ${data[0].username}!`);
 					this.context.toggleAuthentication(true);

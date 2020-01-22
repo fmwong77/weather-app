@@ -9,10 +9,6 @@ const getWeather = (url) => {
 			.get(url)
 			.then((response) => {
 				if (response && response.status === 200) {
-					console.log(response.data.data[0].temp);
-
-					// const { main, icon } = response.data.weather[0];
-					// const { temp, temp_min, temp_max } = response.data.main;
 					const {
 						lon,
 						lat,
@@ -63,18 +59,11 @@ const getDailyWeather = (url) => {
 			.get(url)
 			.then((response) => {
 				if (response && response.status === 200) {
-					// const location = {
-					// 	name: response.data.data[0].city.name,
-					// 	latitude: response.data.city.coord.lat,
-					// 	longitude: response.data.city.coord.lon
-					// };
-
 					const dailyForecasts = response.data.data.map((fc) => {
 						return {
 							condition: fc.weather.description,
 							date: fc.datetime,
 							icon: `../icons/${fc.weather.icon}.png`,
-							// location: location,
 							temperature: {
 								current: fc.temp,
 								max_temp: fc.max_temp,
@@ -98,21 +87,19 @@ const getHourlyWeather = (url) => {
 			.get(url)
 			.then((response) => {
 				if (response && response.status === 200) {
-					const dailyForecasts = response.data.data.slice(0, 10).map((fc) => {
+					const hourlyForecasts = response.data.data.map((fc) => {
 						return {
 							condition: fc.weather.description,
 							date: fc.datetime,
 							icon: `../icons/${fc.weather.icon}.png`,
-							// location: location,
 							temperature: {
 								current: fc.temp,
-								max_temp: fc.max_temp,
-								min_temp: fc.min_temp
+								feels_like: fc.app_temp
 							}
 						};
 					});
 
-					resolve(dailyForecasts);
+					resolve(hourlyForecasts);
 				} else {
 					reject('Weather data not found');
 				}
@@ -159,7 +146,7 @@ class WeatherService {
 			throw Error('Longitude is required');
 		}
 
-		const url = `${WEATHERBIT_BASE_URL}forecastLocation="current"&forecastType="current"&lat=${latitude}&lon=${longitude}&units=${unit}`;
+		const url = `${WEATHERBIT_BASE_URL}forecastLocation="current"&forecastType="hourly"&hours=12&lat=${latitude}&lon=${longitude}&units=${unit}`;
 
 		return getHourlyWeather(url);
 	}
