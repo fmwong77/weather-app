@@ -6,29 +6,34 @@ export const WeatherContext = createContext();
 class WeatherContextProvider extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { unit: 'C' };
+		this.state = {
+			unit: ls.get('unit'),
+			isAuthenticated: false,
+			user_id: null
+		};
 	}
 
-	toggleUnit = () => {
-		this.setState(
-			{ unit: this.state.unit === 'C' ? 'F' : 'C' },
-			ls.set('unit', this.state.unit)
-		);
+	toggleUnit = (e) => {
+		this.setState({ unit: e });
 	};
 
-	// handleOnRefresh = () => {
-	// 	this.setState(() => ({
-	// 		showCurrentWeather: false,
-	// 		showDailyWeather: false,
-	// 		showHourlyWeather: false,
-	// 		unit: this.state.unit === 'C' ? 'F' : 'C'
-	// 	}));
-	// };
+	toggleAuthentication = (e) => {
+		this.setState({ isAuthenticated: e });
+	};
+
+	setUserId = (userid) => {
+		this.setState({ user_id: userid }, () => console.log(this.state.user_id));
+	};
 
 	render() {
 		return (
 			<WeatherContext.Provider
-				value={{ ...this.state, toggleUnit: this.toggleUnit }}
+				value={{
+					...this.state,
+					toggleUnit: this.toggleUnit,
+					toggleAuthentication: this.toggleAuthentication,
+					setUserId: this.setUserId
+				}}
 			>
 				{this.props.children}
 			</WeatherContext.Provider>

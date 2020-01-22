@@ -1,5 +1,6 @@
-import React, { Component, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import notifier from 'simple-react-notifications';
 
 class SignUp extends Component {
 	constructor(props) {
@@ -7,7 +8,6 @@ class SignUp extends Component {
 		this.state = {};
 	}
 
-	static contextType = UserContext;
 	signUp = (e) => {
 		e.persist();
 		e.preventDefault();
@@ -25,15 +25,28 @@ class SignUp extends Component {
 			},
 			body: JSON.stringify(data)
 		};
-		console.log(data);
 
 		fetch('http://127.0.0.1:3000/api/v1/users/', configObject)
 			.then((response) => response.json())
-			.then((message) => console.log(message));
+			.then((object) => {
+				switch (object.message) {
+					case 'User created':
+						notifier.success(
+							`Welcome ${e.target.username.value}! Thank you for signing up.`
+						);
+						// this.history.push('/');
+						break;
+					case 'User already exists':
+						notifier.error(
+							'Username already exists, please use another username'
+						);
+						break;
+					default:
+				}
+			});
 	};
 
 	render() {
-		const { userSignUp } = this.context;
 		return (
 			<div className="card">
 				<h5 className="card-header info-color white-text text-center py-4">
@@ -47,7 +60,6 @@ class SignUp extends Component {
 						action="#!"
 						onSubmit={(e) => {
 							this.signUp(e);
-							userSignUp(e.target.username.value);
 						}}
 					>
 						<div className="md-form">
@@ -69,6 +81,14 @@ class SignUp extends Component {
 							>
 								Sign Up
 							</button>
+							<Link to="/">
+								<button
+									className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+									type="button"
+								>
+									Close
+								</button>
+							</Link>
 						</div>
 					</form>
 				</div>

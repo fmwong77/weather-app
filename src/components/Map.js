@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import notifier from 'simple-react-notifications';
+import { WeatherContext } from '../contexts/WeatherContext';
+
 import {
 	withGoogleMap,
 	GoogleMap,
@@ -9,7 +12,6 @@ import {
 import Geocode from 'react-geocode';
 import Autocomplete from 'react-google-autocomplete';
 Geocode.setApiKey(process.env.REACT_GOOGLE_GEOLOCATION_API_KEY);
-// Geocode.setApiKey('AIzaSyCPeKDCa4hqQkYjzHqRY-vFXc6xeITXxVI');
 Geocode.enableDebug();
 
 class Map extends Component {
@@ -31,9 +33,47 @@ class Map extends Component {
 		};
 	}
 
-	CreateFavouriteLocation = (e) => {
+	static contextType = WeatherContext;
+
+	createFavouriteLocation = (e) => {
+		e.persist();
 		e.preventDefault();
-		console.log(this.state.mapPosition);
+		console.log(this.state.mapPosition.lat);
+		console.log(this.state.mapPosition.lng);
+		console.log(this.context.user_id);
+
+		let data = {
+			user_id: this.context.user_id,
+			latitude: this.state.mapPosition.lat,
+			longitude: this.state.mapPosition.lng,
+			area: this.state.area,
+			state: this.state.state
+		};
+
+		const configObject = {
+			method: 'POST',
+			mode: 'cors',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		};
+
+		fetch('http://127.0.0.1:3000/api/v1/favourite_locations/', configObject)
+			.then((response) => response.json())
+			.then((object) => {
+				switch (object.message) {
+					case 'Created':
+						notifier.success('Favourite location is created.');
+						break;
+					case 'Error':
+						notifier.error('Error in creating favourite location.');
+						break;
+					default:
+						notifier.error('Information');
+				}
+			});
 	};
 
 	/**
@@ -172,6 +212,8 @@ class Map extends Component {
 
 		Geocode.fromLatLng(newLat, newLng).then(
 			(response) => {
+				console.log(response.results[0]);
+
 				const address = response.results[0].formatted_address,
 					addressArray = response.results[0].address_components,
 					city = this.getCity(addressArray),
@@ -332,7 +374,7 @@ class Map extends Component {
 					</div>
 
 					<AsyncMap
-						googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPeKDCa4hqQkYjzHqRY-vFXc6xeITXxVI&libraries=places"
+						googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyCPeKDCa4hqQkYjzHqRY-vFXc6xeITXxVI&libraries=places`}
 						loadingElement={<div style={{ height: `100%` }} />}
 						containerElement={<div style={{ height: this.props.height }} />}
 						mapElement={<div style={{ height: `100%` }} />}
@@ -340,7 +382,7 @@ class Map extends Component {
 					<br></br>
 					<br></br>
 					<div style={{ textAlign: 'right' }}>
-						<form onSubmit={(event) => this.CreateFavouriteLocation(event)}>
+						<form onSubmit={(event) => this.createFavouriteLocation(event)}>
 							<button type="submit">Add Location</button>
 						</form>
 					</div>

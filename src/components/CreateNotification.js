@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import ls from 'local-storage';
 
 class CreateNotification extends Component {
@@ -39,6 +40,9 @@ class CreateNotification extends Component {
 								type="submit"
 							>
 								Create
+							</button>
+							<button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0">
+								<Link to="/">Close</Link>
 							</button>
 						</div>
 					</form>
