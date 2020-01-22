@@ -46,7 +46,7 @@ class CurrentWeatherDisplay extends Component {
 				</div>
 				<div className="weather-min-max-temp">
 					<span className="weather-description">
-						Visibility: {weather.vis} mi
+						Visibility: {weather.vis} {this.context.unit === 'C' ? 'km' : 'mi'}
 					</span>
 					<br></br>
 					<span className="weather-description">

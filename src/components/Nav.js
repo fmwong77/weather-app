@@ -10,7 +10,6 @@ class Header extends Component {
 	};
 
 	render() {
-		console.log(this.context);
 		const { isAuthenticated } = this.context;
 		return (
 			<nav

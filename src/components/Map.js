@@ -38,9 +38,6 @@ class Map extends Component {
 	createFavouriteLocation = (e) => {
 		e.persist();
 		e.preventDefault();
-		console.log(this.state.mapPosition.lat);
-		console.log(this.state.mapPosition.lng);
-		console.log(this.context.user_id);
 
 		let data = {
 			user_id: this.context.user_id,
@@ -90,8 +87,6 @@ class Map extends Component {
 					city = this.getCity(addressArray),
 					area = this.getArea(addressArray),
 					state = this.getState(addressArray);
-
-				console.log('city', city, area, state);
 
 				this.setState({
 					address: address ? address : '',
@@ -212,7 +207,6 @@ class Map extends Component {
 
 		Geocode.fromLatLng(newLat, newLng).then(
 			(response) => {
-				console.log(response.results[0]);
 
 				const address = response.results[0].formatted_address,
 					addressArray = response.results[0].address_components,
@@ -245,7 +239,6 @@ class Map extends Component {
 	 * @param place
 	 */
 	onPlaceSelected = (place) => {
-		console.log('plc', place);
 		const address = place.formatted_address,
 			addressArray = place.address_components,
 			city = this.getCity(addressArray),

@@ -18,18 +18,46 @@ class WeatherDashBoard extends Component {
 		super(props);
 		this.state = {
 			position: {
-				latitude: 0,
-				longitude: 0
+				latitude: null,
+				longitude: null
 			},
 			weather: null,
 			showCurrentWeather: false,
 			showDailyWeather: false,
-			showHourlyWeather: false
+			// showHourlyWeather: false,
+			unit: null
 		};
 	}
 
 	componentDidUpdate() {
-		// this.loadCurrentWeatherByPosition(this.state.position);
+		if (this.state.unit !== this.context.unit) {
+			let latitude, longitude;
+			if (
+				this.context.latitude === null ||
+				this.context.latitude === 'Current'
+			) {
+				this.loadCurrentWeatherByPosition(this.state.position);
+				this.loadDailyWeatherByPosition(this.state.position);
+			} else {
+				latitude = this.context.latitude;
+				longitude = this.context.longitude;
+				const position = {
+					latitude,
+					longitude
+				};
+
+				this.loadCurrentWeatherByPosition(position);
+				this.loadDailyWeatherByPosition(position);
+			}
+
+			// this.loadHourlyWeatherByPosition(this.state.position);
+
+			this.setState({
+				unit: this.context.unit,
+				latitude: this.context.latitude,
+				longitude: this.context.longitude
+			});
+		}
 	}
 
 	componentDidMount() {
@@ -80,6 +108,7 @@ class WeatherDashBoard extends Component {
 						() => {
 							self.loadCurrentWeatherByPosition(self.state.position);
 							self.loadDailyWeatherByPosition(self.state.position);
+							// self.loadHourlyWeatherByPosition(self.state.position);
 						}
 					);
 				},
@@ -113,7 +142,6 @@ class WeatherDashBoard extends Component {
 		if (!position) {
 			throw Error('A valid position must be specified');
 		}
-		console.log('daily');
 
 		weatherService
 			.getDailyWeatherByPosition(
@@ -132,24 +160,62 @@ class WeatherDashBoard extends Component {
 			.catch((error) => console.log(error));
 	}
 
+	loadHourlyWeatherByPosition(position) {
+		if (!position) {
+			throw Error('A valid position must be specified');
+		}
+
+		weatherService
+			.getHourlyWeatherByPosition(
+				position,
+				this.context.unit === 'C' ? 'M' : 'I'
+			)
+			.then((hourlyForecasts) => {
+				this.setState(
+					{
+						hourlyForecasts: hourlyForecasts,
+						showHourlyWeather: true
+					},
+					() => console.log(this.state.hourlyForecasts)
+				);
+			})
+			.catch((error) => console.log(error));
+	}
+
 	handleOnRefresh = () => {
 		this.setState(() => ({
 			showCurrentWeather: false,
-			showDailyWeather: false,
-			showHourlyWeather: false
+			showDailyWeather: false
+			// showHourlyWeather: false
 		}));
+		console.log(this.context.latitude);
 
-		this.getLocation();
+		if (this.context.latitude === null || this.context.latitude === 'Current') {
+			this.getLocation();
+		} else {
+			const latitude = this.context.latitude;
+			const longitude = this.context.longitude;
+			const position = {
+				latitude,
+				longitude
+			};
+			this.loadCurrentWeatherByPosition(position);
+			this.loadDailyWeatherByPosition(position);
+		}
 	};
 
 	showWeather() {
-		return this.state.showCurrentWeather && this.state.showDailyWeather;
-		// this.state.showHourlyWeather
+		return (
+			this.state.showCurrentWeather && this.state.showDailyWeather //&&
+			// this.state.showHourlyWeather
+		);
 	}
 
 	showSpinner() {
-		return !this.state.showCurrentWeather || !this.state.showDailyWeather;
-		// !this.state.showHourlyWeather
+		return (
+			!this.state.showCurrentWeather || !this.state.showDailyWeather //||
+			// !this.state.showHourlyWeather
+		);
 	}
 
 	render() {
@@ -165,8 +231,17 @@ class WeatherDashBoard extends Component {
 							dailyForecasts={
 								this.state.dailyForecasts ? this.state.dailyForecasts : null
 							}
+							onRefresh={this.handleOnRefresh}
+							// dailyForecasts={
+							// 	this.state.dailyForecasts ? this.state.dailyForecasts : null
+							// }
 						/>
 						<HourlyWeatherDisplay />
+						hourlyForecasts=
+						{this.state.hourlyForecasts ? this.state.hourlyForecasts : null}
+						onRefresh={this.handleOnRefresh}
+						{/* hourlyForecasts=
+						{this.state.hourlyForecasts ? this.state.hourlyForecasts : null} */}
 					</div>
 				)}
 				{this.showSpinner() && (
