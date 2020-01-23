@@ -12,6 +12,7 @@ class CreateNotification extends Component {
 		e.preventDefault();
 
 		ls.set('NotificationTime', e.target.time.value);
+		this.props.history.push('/');
 	};
 
 	render() {

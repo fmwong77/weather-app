@@ -11,7 +11,8 @@ class WeatherContextProvider extends Component {
 			isAuthenticated: false,
 			user_id: null,
 			latitude: null,
-			longitude: null
+			longitude: null,
+			isLocationAdded: false
 		};
 	}
 
@@ -21,6 +22,10 @@ class WeatherContextProvider extends Component {
 
 	toggleAuthentication = (e) => {
 		this.setState({ isAuthenticated: e });
+	};
+
+	setLocationAdded = () => {
+		this.setState({ isLocationAdded: !this.state.isLocationAdded });
 	};
 
 	setUserId = (userid) => {
@@ -51,7 +56,8 @@ class WeatherContextProvider extends Component {
 					toggleUnit: this.toggleUnit,
 					toggleAuthentication: this.toggleAuthentication,
 					setUserId: this.setUserId,
-					setLocation: this.setLocation
+					setLocation: this.setLocation,
+					setLocationAdded: this.setLocationAdded
 				}}
 			>
 				{this.props.children}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import notifier from 'simple-react-notifications';
 import { WeatherContext } from '../contexts/WeatherContext';
+import { Link } from 'react-router-dom';
 
 import {
 	withGoogleMap,
@@ -65,12 +66,14 @@ class Map extends Component {
 						notifier.success('Favourite location is created.');
 						break;
 					case 'Error':
-						notifier.error('Error in creating favourite location.');
+						notifier.error('This favourite location already exists.');
 						break;
 					default:
 						notifier.error('Information');
 				}
+				// history.push('/');
 			});
+		this.context.setLocationAdded();
 	};
 
 	/**
@@ -207,7 +210,6 @@ class Map extends Component {
 
 		Geocode.fromLatLng(newLat, newLng).then(
 			(response) => {
-
 				const address = response.results[0].formatted_address,
 					addressArray = response.results[0].address_components,
 					city = this.getCity(addressArray),
@@ -320,7 +322,7 @@ class Map extends Component {
 			map = (
 				<div>
 					<div>
-						<div className="form-group">
+						{/* <div className="form-group">
 							<label htmlFor="">City</label>
 							<input
 								type="text"
@@ -330,7 +332,7 @@ class Map extends Component {
 								readOnly="readOnly"
 								value={this.state.city}
 							/>
-						</div>
+						</div> */}
 						<div className="form-group">
 							<label htmlFor="">Area</label>
 							<input
@@ -353,7 +355,7 @@ class Map extends Component {
 								value={this.state.state}
 							/>
 						</div>
-						<div className="form-group">
+						{/* <div className="form-group">
 							<label htmlFor="">Address</label>
 							<input
 								type="text"
@@ -363,7 +365,7 @@ class Map extends Component {
 								readOnly="readOnly"
 								value={this.state.address}
 							/>
-						</div>
+						</div> */}
 					</div>
 
 					<AsyncMap
@@ -376,7 +378,20 @@ class Map extends Component {
 					<br></br>
 					<div style={{ textAlign: 'right' }}>
 						<form onSubmit={(event) => this.createFavouriteLocation(event)}>
-							<button type="submit">Add Location</button>
+							<button
+								className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+								type="submit"
+							>
+								Add Location
+							</button>
+							<Link to="/">
+								<button
+									className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+									type="button"
+								>
+									Close
+								</button>
+							</Link>
 						</form>
 					</div>
 				</div>

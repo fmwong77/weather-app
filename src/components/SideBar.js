@@ -8,12 +8,21 @@ class SideBar extends Component {
 		super(props);
 		this.state = {
 			locations: [],
-			user_id: null
+			user_id: null,
+			locationAdded: false
 		};
 	}
 
 	componentDidUpdate() {
-		if (this.state.user_id !== this.context.user_id) {
+		console.log(this.context.user_id);
+		console.log(this.context.isLocationAdded);
+
+		if (
+			this.context.isLocationAdded !== this.state.locationAdded ||
+			this.state.user_id !== this.context.user_id
+		) {
+			// if (this.state.user_id !== this.context.user_id) {
+
 			if (this.context.user_id) {
 				fetch(
 					`http://127.0.0.1:3000/api/v1/favourite_locations?user_id=${this.context.user_id}`
@@ -22,7 +31,8 @@ class SideBar extends Component {
 					.then((locations) =>
 						this.setState({
 							locations: locations,
-							user_id: this.context.user_id
+							user_id: this.context.user_id,
+							locationAdded: this.context.isLocationAdded
 						})
 					);
 			}
@@ -35,7 +45,8 @@ class SideBar extends Component {
 
 	render() {
 		return (
-			<form>
+			<form className="text-center" style={{ color: '#757575' }} action="#!">
+				Forecast Location
 				<select
 					name="location"
 					id="location"

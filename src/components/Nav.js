@@ -7,6 +7,8 @@ class Header extends Component {
 
 	signOut = () => {
 		this.context.toggleAuthentication(false);
+		this.context.setUserId(null);
+		this.context.setLocationAdded();
 	};
 
 	render() {

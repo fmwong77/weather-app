@@ -11,7 +11,6 @@ import SignOut from './components/SignOut';
 import SideBar from './components/SideBar';
 
 import WeatherContextProvider from './contexts/WeatherContext';
-
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -38,10 +37,8 @@ class App extends Component {
 								<Route exact path="/setting" component={Setting}></Route>
 								<Route exact path="/signin" component={Authenticate}></Route>
 								<Route exact path="/signout" component={SignOut}></Route>
+								<SideBar />
 
-								<div className="ui vertical labeled icon ui overlay left thin visible sidebar menu">
-									<SideBar />
-								</div>
 								<WeatherDashBoard />
 							</div>
 						</div>

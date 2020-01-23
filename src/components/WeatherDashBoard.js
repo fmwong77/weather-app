@@ -3,7 +3,6 @@ import CurrentWeatherDisplay from './CurrentWeatherDisplay';
 import HourlyWeatherDisplay from './HourlyWeatherDisplay';
 import DailyWeatherDisplay from './DailyWeatherDisplay';
 import { WeatherService } from '../services/WeatherService';
-import CreateNotification from './CreateNotification';
 import ls from 'local-storage';
 import notifier from 'simple-react-notifications';
 import 'simple-react-notifications/dist/index.css';
@@ -24,7 +23,7 @@ class WeatherDashBoard extends Component {
 			weather: null,
 			showCurrentWeather: false,
 			showDailyWeather: false,
-			// showHourlyWeather: false,
+			showHourlyWeather: false,
 			unit: null
 		};
 	}
@@ -38,6 +37,7 @@ class WeatherDashBoard extends Component {
 			) {
 				this.loadCurrentWeatherByPosition(this.state.position);
 				this.loadDailyWeatherByPosition(this.state.position);
+				this.loadHourlyWeatherByPosition(this.state.position);
 			} else {
 				latitude = this.context.latitude;
 				longitude = this.context.longitude;
@@ -48,9 +48,8 @@ class WeatherDashBoard extends Component {
 
 				this.loadCurrentWeatherByPosition(position);
 				this.loadDailyWeatherByPosition(position);
+				this.loadHourlyWeatherByPosition(position);
 			}
-
-			// this.loadHourlyWeatherByPosition(this.state.position);
 
 			this.setState({
 				unit: this.context.unit,
@@ -108,7 +107,7 @@ class WeatherDashBoard extends Component {
 						() => {
 							self.loadCurrentWeatherByPosition(self.state.position);
 							self.loadDailyWeatherByPosition(self.state.position);
-							// self.loadHourlyWeatherByPosition(self.state.position);
+							self.loadHourlyWeatherByPosition(self.state.position);
 						}
 					);
 				},
@@ -166,18 +165,12 @@ class WeatherDashBoard extends Component {
 		}
 
 		weatherService
-			.getHourlyWeatherByPosition(
-				position,
-				this.context.unit === 'C' ? 'M' : 'I'
-			)
+			.getHourlyWeatherByPosition(position)
 			.then((hourlyForecasts) => {
-				this.setState(
-					{
-						hourlyForecasts: hourlyForecasts,
-						showHourlyWeather: true
-					},
-					() => console.log(this.state.hourlyForecasts)
-				);
+				this.setState(() => ({
+					hourlyForecasts: hourlyForecasts,
+					showHourlyWeather: true
+				}));
 			})
 			.catch((error) => console.log(error));
 	}
@@ -185,10 +178,9 @@ class WeatherDashBoard extends Component {
 	handleOnRefresh = () => {
 		this.setState(() => ({
 			showCurrentWeather: false,
-			showDailyWeather: false
-			// showHourlyWeather: false
+			showDailyWeather: false,
+			showHourlyWeather: false
 		}));
-		console.log(this.context.latitude);
 
 		if (this.context.latitude === null || this.context.latitude === 'Current') {
 			this.getLocation();
@@ -201,20 +193,23 @@ class WeatherDashBoard extends Component {
 			};
 			this.loadCurrentWeatherByPosition(position);
 			this.loadDailyWeatherByPosition(position);
+			this.loadHourlyWeatherByPosition(position);
 		}
 	};
 
 	showWeather() {
 		return (
-			this.state.showCurrentWeather && this.state.showDailyWeather //&&
-			// this.state.showHourlyWeather
+			this.state.showCurrentWeather &&
+			this.state.showDailyWeather &&
+			this.state.showHourlyWeather
 		);
 	}
 
 	showSpinner() {
 		return (
-			!this.state.showCurrentWeather || !this.state.showDailyWeather //||
-			// !this.state.showHourlyWeather
+			!this.state.showCurrentWeather ||
+			!this.state.showDailyWeather ||
+			!this.state.showHourlyWeather
 		);
 	}
 
@@ -236,12 +231,12 @@ class WeatherDashBoard extends Component {
 							// 	this.state.dailyForecasts ? this.state.dailyForecasts : null
 							// }
 						/>
-						<HourlyWeatherDisplay />
-						hourlyForecasts=
-						{this.state.hourlyForecasts ? this.state.hourlyForecasts : null}
-						onRefresh={this.handleOnRefresh}
-						{/* hourlyForecasts=
-						{this.state.hourlyForecasts ? this.state.hourlyForecasts : null} */}
+						<HourlyWeatherDisplay
+							hourlyForecasts={
+								this.state.hourlyForecasts ? this.state.hourlyForecasts : null
+							}
+							onRefresh={this.handleOnRefresh}
+						/>
 					</div>
 				)}
 				{this.showSpinner() && (

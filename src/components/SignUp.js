@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import notifier from 'simple-react-notifications';
 
 class SignUp extends Component {
@@ -34,7 +34,8 @@ class SignUp extends Component {
 						notifier.success(
 							`Welcome ${e.target.username.value}! Thank you for signing up.`
 						);
-						// this.history.push('/');
+
+						this.props.history.push('/');
 						break;
 					case 'User already exists':
 						notifier.error(
