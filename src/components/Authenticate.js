@@ -39,9 +39,10 @@ class Authenticate extends Component {
 			.then((response) => response.json())
 			.then((data) => {
 				if (data.length > 0) {
-					notifier.success(`Welcome ${data[0].username}!`);
+					notifier.success(`Welcome back ${data[0].username}!`);
 					this.context.toggleAuthentication(true);
 					this.context.setUserId(data[0].id);
+					this.props.history.push('/');
 				} else {
 					notifier.error('Invalid username or password');
 					this.context.toggleAuthentication(false);

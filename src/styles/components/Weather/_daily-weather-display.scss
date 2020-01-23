@@ -1,19 +1,22 @@
-$daily-weather-display-height: 170px;
+$daily-weather-display-height: 190px;
 $daily-weather-display-background-color: #cfd8dc;
 
 .daily-weather-card {
 	height: $daily-weather-display-height - 20px;
 	text-align: center;
+	width: 25%;
+	display: inline-block;
 }
 
 .daily-weather-card .icon {
-	height: 50px;
-	max-width: 50px;
+	height: 70px;
+	max-width: 70px;
 }
 
 .daily-weather-display {
 	background-color: $daily-weather-display-background-color;
 	height: $daily-weather-display-height;
+	// height: 100px;
 	position: relative;
 	width: 100%;
 }

@@ -33,13 +33,17 @@ class CurrentWeatherDisplay extends Component {
 					</span>
 				</div>
 				<div className="weather-condition">
-					<img className="weather-icon" src={weather.icon} />
+					<img
+						className="weather-icon"
+						src={weather.icon}
+						alt={weather.condition}
+					/>
 					<span className="weather-description">{weather.condition}</span>
 				</div>
 				<div className="weather-min-max-temp">
 					<span className="weather-description">
 						Precipitation: {weather.precip}
-						{this.context.unit === 'C' ? 'mm' : 'in'}
+						{this.context.unit === 'C' ? ' mm' : ' in'}
 					</span>
 					<br></br>
 					<span className="weather-description">UV Index: {weather.uv}</span>

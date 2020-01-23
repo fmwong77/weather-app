@@ -33,7 +33,7 @@ const getWeather = (url) => {
 						vis: vis,
 						condition: response.data.data[0].weather.description,
 						date: ob_time, //new Date(dt * 1000),
-						icon: `../icons/${response.data.data[0].weather.icon}.png`,
+						icon: `../icons/${response.data.data[0].weather.icon}.svg`,
 						location: {
 							name: city_name,
 							latitude: lat,
@@ -63,7 +63,7 @@ const getDailyWeather = (url) => {
 						return {
 							condition: fc.weather.description,
 							date: fc.datetime,
-							icon: `../icons/${fc.weather.icon}.png`,
+							icon: `../icons/${fc.weather.icon}.svg`,
 							temperature: {
 								current: fc.temp,
 								max_temp: fc.max_temp,
@@ -88,10 +88,15 @@ const getHourlyWeather = (url) => {
 			.then((response) => {
 				if (response && response.status === 200) {
 					const hourlyForecasts = response.data.data.map((fc) => {
+						const index = fc.timestamp_local.indexOf('T');
+
 						return {
 							condition: fc.weather.description,
-							date: fc.datetime,
-							icon: `../icons/${fc.weather.icon}.png`,
+							time: fc.timestamp_local.substring(
+								index + 1,
+								fc.timestamp_local.length
+							),
+							icon: `../icons/${fc.weather.icon}.svg`,
 							temperature: {
 								current: fc.temp,
 								feels_like: fc.app_temp
