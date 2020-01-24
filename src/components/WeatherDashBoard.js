@@ -165,7 +165,10 @@ class WeatherDashBoard extends Component {
 		}
 
 		weatherService
-			.getHourlyWeatherByPosition(position)
+			.getHourlyWeatherByPosition(
+				position,
+				this.context.unit === 'C' ? 'M' : 'I'
+			)
 			.then((hourlyForecasts) => {
 				this.setState(() => ({
 					hourlyForecasts: hourlyForecasts,

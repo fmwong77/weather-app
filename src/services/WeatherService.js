@@ -33,7 +33,10 @@ const getWeather = (url) => {
 						vis: vis,
 						condition: response.data.data[0].weather.description,
 						date: ob_time, //new Date(dt * 1000),
-						icon: `../icons/${response.data.data[0].weather.icon}.svg`,
+						icon:
+							pod === 'd'
+								? `../icons/${response.data.data[0].weather.icon}.svg`
+								: `../icons/${response.data.data[0].weather.icon}.svg`,
 						location: {
 							name: city_name,
 							latitude: lat,
@@ -96,7 +99,11 @@ const getHourlyWeather = (url) => {
 								index + 1,
 								fc.timestamp_local.length
 							),
-							icon: `../icons/${fc.weather.icon}.svg`,
+							timestamp_local: fc.timestamp_local,
+							icon:
+								fc.pod === 'd'
+									? `../icons/${fc.weather.icon}.svg`
+									: `../icons/${fc.weather.icon}.png`,
 							temperature: {
 								current: fc.temp,
 								feels_like: fc.app_temp

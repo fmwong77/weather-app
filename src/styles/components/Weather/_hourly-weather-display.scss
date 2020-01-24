@@ -1,4 +1,4 @@
-$hourly-weather-display-height: 190px;
+$hourly-weather-display-height: 300px;
 $hourly-weather-display-color: lightSteelBlue;
 
 .hourly-weather-card {
@@ -9,8 +9,8 @@ $hourly-weather-display-color: lightSteelBlue;
 }
 
 .hourly-weather-card .icon {
-	height: 70px;
-	max-width: 70px;
+	height: 120px;
+	max-width: 120px;
 }
 
 .hourly-weather-display {

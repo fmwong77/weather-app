@@ -11,40 +11,45 @@ class SignUp extends Component {
 	signUp = (e) => {
 		e.persist();
 		e.preventDefault();
-		let data = {
-			username: e.target.username.value,
-			password: e.target.password.value
-		};
 
-		const configObject = {
-			method: 'POST',
-			mode: 'cors',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		};
+		if (e.target.password.value !== e.target.confirm_pwd.value) {
+			notifier.error('Password does not match');
+		} else {
+			let data = {
+				username: e.target.username.value,
+				password: e.target.password.value
+			};
 
-		fetch('http://127.0.0.1:3000/api/v1/users/', configObject)
-			.then((response) => response.json())
-			.then((object) => {
-				switch (object.message) {
-					case 'User created':
-						notifier.success(
-							`Welcome ${e.target.username.value}! Thank you for signing up.`
-						);
+			const configObject = {
+				method: 'POST',
+				mode: 'cors',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			};
 
-						this.props.history.push('/');
-						break;
-					case 'User already exists':
-						notifier.error(
-							'Username already exists, please use another username'
-						);
-						break;
-					default:
-				}
-			});
+			fetch('http://127.0.0.1:3000/api/v1/users/', configObject)
+				.then((response) => response.json())
+				.then((object) => {
+					switch (object.message) {
+						case 'User created':
+							notifier.success(
+								`Welcome ${e.target.username.value}! Thank you for signing up.`
+							);
+
+							this.props.history.push('/');
+							break;
+						case 'User already exists':
+							notifier.error(
+								'Username already exists, please use another username'
+							);
+							break;
+						default:
+					}
+				});
+		}
 	};
 
 	render() {
@@ -75,6 +80,12 @@ class SignUp extends Component {
 								name="password"
 								className="form-control"
 								placeholder="Password"
+							></input>
+							<input
+								type="password"
+								name="confirm_pwd"
+								className="form-control"
+								placeholder="Confirm Password"
 							></input>
 							<button
 								className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"

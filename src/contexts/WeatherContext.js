@@ -12,7 +12,10 @@ class WeatherContextProvider extends Component {
 			user_id: null,
 			latitude: null,
 			longitude: null,
-			isLocationAdded: false
+			isLocationAdded: false,
+			area: null,
+			state: null,
+			locations: []
 		};
 	}
 
@@ -48,6 +51,14 @@ class WeatherContextProvider extends Component {
 		}
 	};
 
+	setLocationArray = (locations) => {
+		if (locations !== null) {
+			this.setState({ locations: locations });
+		} else {
+			this.setState({ locations: [] });
+		}
+	};
+
 	render() {
 		return (
 			<WeatherContext.Provider
@@ -57,7 +68,8 @@ class WeatherContextProvider extends Component {
 					toggleAuthentication: this.toggleAuthentication,
 					setUserId: this.setUserId,
 					setLocation: this.setLocation,
-					setLocationAdded: this.setLocationAdded
+					setLocationAdded: this.setLocationAdded,
+					setLocationArray: this.setLocationArray
 				}}
 			>
 				{this.props.children}

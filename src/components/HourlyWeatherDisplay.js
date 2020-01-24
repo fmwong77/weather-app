@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import OwlCarousel from 'react-owl-carousel2';
 import HourlyWeatherForecastCard from './HourlyWeatherForecastCard';
 import Slider from 'infinite-react-carousel';
-
-const options = {
-	items: 5,
-	nav: false,
-	rewind: true,
-	autoplay: false
-};
 
 const settings = {
 	slidesPerRow: 4

@@ -9,6 +9,7 @@ class Header extends Component {
 		this.context.toggleAuthentication(false);
 		this.context.setUserId(null);
 		this.context.setLocationAdded();
+		this.context.setLocationArray(null);
 	};
 
 	render() {
@@ -23,7 +24,7 @@ class Header extends Component {
 						<div className="brand">
 							<Link to="/">
 								<i className="brand-icon fa fa-sun-o fa-2x"></i>
-								<span className="brand-text">Weather</span>
+								<span className="brand-text">Weathr</span>
 							</Link>
 							<Link to="/">
 								<span onClick={this.signOut}>
@@ -55,7 +56,7 @@ class Header extends Component {
 						<div className="brand">
 							<Link to="/">
 								<i className="brand-icon fa fa-sun-o fa-2x"></i>
-								<span className="brand-text">Weather</span>
+								<span className="brand-text">Weathr</span>
 							</Link>
 							<Link to="/signin">
 								<span>

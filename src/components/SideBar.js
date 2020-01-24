@@ -28,13 +28,15 @@ class SideBar extends Component {
 					`http://127.0.0.1:3000/api/v1/favourite_locations?user_id=${this.context.user_id}`
 				)
 					.then((response) => response.json())
-					.then((locations) =>
+					.then((locations) => {
+						this.context.setLocationArray(locations);
+
 						this.setState({
 							locations: locations,
 							user_id: this.context.user_id,
 							locationAdded: this.context.isLocationAdded
-						})
-					);
+						});
+					});
 			}
 		}
 	}
@@ -53,7 +55,12 @@ class SideBar extends Component {
 					onChange={(event) => this.setLocationInContext(event)}
 				>
 					<option value={null}>Current</option>
-					{this.state.locations.map((location) => (
+					{/* {this.state.locations.map((location) => (
+						<option
+							value={`${location.latitude},${location.longitude},${location.area},${location.state}`}
+						>{`${location.area}, ${location.state}`}</option>
+					))} */}
+					{this.context.locations.map((location) => (
 						<option
 							value={`${location.latitude},${location.longitude}`}
 						>{`${location.area}, ${location.state}`}</option>

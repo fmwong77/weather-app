@@ -1,4 +1,4 @@
-$daily-weather-display-height: 190px;
+$daily-weather-display-height: 300px;
 $daily-weather-display-background-color: #cfd8dc;
 
 .daily-weather-card {
@@ -9,8 +9,8 @@ $daily-weather-display-background-color: #cfd8dc;
 }
 
 .daily-weather-card .icon {
-	height: 70px;
-	max-width: 70px;
+	height: 120px;
+	max-width: 120px;
 }
 
 .daily-weather-display {

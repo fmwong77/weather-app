@@ -35,6 +35,8 @@ function tConvert(time) {
 const HourlyWeatherForecastCard = ({ forecast }) => (
 	<div className="hourly-weather-card">
 		<small>{tConvert(forecast.time.substring(0, 5))}</small>
+		{/* <br></br>
+		<small>{forecast.timestamp_local}</small> */}
 		<br></br>
 		<img
 			className="icon mx-auto"
