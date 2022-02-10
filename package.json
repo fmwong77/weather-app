@@ -9,7 +9,7 @@
 		"axios": "^0.19.1",
 		"infinite-react-carousel": "^1.2.9",
 		"local-storage": "^2.0.0",
-		"node-sass": "^4.13.1",
+		"node-sass": "^7.0.0",
 		"owl.carousel": "^2.3.4",
 		"react": "^16.12.0",
 		"react-animated-slider": "^2.0.0",
